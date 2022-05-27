@@ -20,6 +20,7 @@ async function run() {
     try {
         await client.connect();
         const toolsColletions = client.db("toolsCollection").collection("Tools");
+        const reviewColletions = client.db("toolsCollection").collection("reviews");
         app.get('/tools', async (req, res) => {
             const query = {}
             const cursor = toolsColletions.find(query);
@@ -34,6 +35,17 @@ async function run() {
             res.send(result)
         }
         )
+        app.post('/review', async (req, res) => {
+            const newData = req.body;
+            const result = await reviewColletions.insertOne(newData)
+            res.send(result)
+        })
+        app.get('/review', async (req, res) => {
+            const query = {}
+            const cursor = reviewColletions.find(query);
+            const result = await cursor.toArray()
+            res.send(result)
+        })
     }
 
     finally {
