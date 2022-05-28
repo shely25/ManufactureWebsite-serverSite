@@ -73,6 +73,18 @@ async function run() {
             const result = await profileColletions.updateOne(email, updateDoc, options)
             res.send(result)
         })
+        app.put('/profile/user', async (req, res) => {
+            const email = req.query
+            console.log(email)
+            const data = req.body
+            const updateDoc = {
+                $set: {
+                    role: "admin"
+                }
+            };
+            const result = await profileColletions.updateOne(email, updateDoc)
+            res.send(result)
+        })
         app.post('/profile', async (req, res) => {
             const newData = req.body;
             const result = await profileColletions.insertOne(newData)
