@@ -48,6 +48,20 @@ async function run() {
             const result = await cursor.toArray()
             res.send(result)
         })
+        app.get('/profile', async (req, res) => {
+            const query = {}
+            const cursor = profileColletions.find(query);
+            const result = await cursor.toArray()
+            res.send(result)
+        })
+        app.get('/profile/user', async (req, res) => {
+            const email = req.query
+            console.log(email)
+            const cursor = await profileColletions.findOne(email);
+            console.log(cursor)
+            res.send(cursor)
+
+        })
         app.put('/profile', async (req, res) => {
             const email = req.query
             console.log(email)
