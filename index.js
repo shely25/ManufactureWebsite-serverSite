@@ -84,9 +84,20 @@ async function run() {
             const result = await ordersColletions.insertOne(newData)
             res.send(result)
         })
+        app.post('/tools', async (req, res) => {
+            const newData = req.body;
+            const result = await toolsColletions.insertOne(newData)
+            res.send(result)
+        })
         app.get('/orders', async (req, res) => {
             const email = req.query
             const cursor = ordersColletions.find(email);
+            const result = await cursor.toArray()
+            res.send(result)
+        })
+        app.get('/orders/all', async (req, res) => {
+            const query = {}
+            const cursor = ordersColletions.find(query);
             const result = await cursor.toArray()
             res.send(result)
         })
