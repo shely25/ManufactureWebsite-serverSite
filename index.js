@@ -22,6 +22,7 @@ async function run() {
         const toolsColletions = client.db("toolsCollection").collection("Tools");
         const reviewColletions = client.db("toolsCollection").collection("reviews");
         const ordersColletions = client.db("toolsCollection").collection("orders");
+        const profileColletions = client.db("toolsCollection").collection("profiles");
         app.get('/tools', async (req, res) => {
             const query = {}
             const cursor = toolsColletions.find(query);
@@ -47,6 +48,23 @@ async function run() {
             const result = await cursor.toArray()
             res.send(result)
         })
+        app.put('/profile', async (req, res) => {
+            const email = req.query
+            console.log(email)
+            const data = req.body
+            const options = { upsert: true };
+            const updateDoc = {
+                $set: data
+            };
+            const result = await profileColletions.updateOne(email, updateDoc, options)
+            res.send(result)
+        })
+        app.post('/profile', async (req, res) => {
+            const newData = req.body;
+            const result = await profileColletions.insertOne(newData)
+            res.send(result)
+        })
+
         app.post('/orders', async (req, res) => {
             const newData = req.body;
             const result = await ordersColletions.insertOne(newData)
