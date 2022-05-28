@@ -21,6 +21,7 @@ async function run() {
         await client.connect();
         const toolsColletions = client.db("toolsCollection").collection("Tools");
         const reviewColletions = client.db("toolsCollection").collection("reviews");
+        const ordersColletions = client.db("toolsCollection").collection("orders");
         app.get('/tools', async (req, res) => {
             const query = {}
             const cursor = toolsColletions.find(query);
@@ -44,6 +45,24 @@ async function run() {
             const query = {}
             const cursor = reviewColletions.find(query);
             const result = await cursor.toArray()
+            res.send(result)
+        })
+        app.post('/orders', async (req, res) => {
+            const newData = req.body;
+            const result = await ordersColletions.insertOne(newData)
+            res.send(result)
+        })
+        app.get('/orders', async (req, res) => {
+            const email = req.query
+            const cursor = ordersColletions.find(email);
+            const result = await cursor.toArray()
+            res.send(result)
+        })
+        app.delete('/orders/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await ordersColletions.deleteOne(query);
+            //console.log(result)
             res.send(result)
         })
     }
